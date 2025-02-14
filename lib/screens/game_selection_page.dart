@@ -1,38 +1,46 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import '../models/Game.dart';
+import 'game_page.dart';
 
 class GameSelectionPage extends StatelessWidget {
   const GameSelectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    List<Game> games = [
+      const Game('Pong', '/pong'),
+      const Game('Flappybird', '/flappy'),
+    ];
+
     return Scaffold(
       appBar: AppBar(title: const Text("Wybierz grę")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildGameButton(context, "Pong", "/pong"),
-            const SizedBox(height: 20),
-            _buildGameButton(context, "Flappybird", "/flappy"),
-          ],
+          children: games.map((game) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: _buildGameButton(context, game),
+            );
+          }).toList(),
         ),
       ),
     );
   }
 
-  Widget _buildGameButton(BuildContext context, String gameName, String path) {
+
+  Widget _buildGameButton(BuildContext context, Game game) {
     return ElevatedButton(
       onPressed: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => MyHomePage(title: gameName, gamePath: path),
+            builder: (context) => GamePage(game: game),
           ),
         );
       },
-      child: Text(gameName),
+      child: Text(game.name),
     );
   }
 }

@@ -1,27 +1,27 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:rag_2_mobile/models/Game.dart';
 
 import '../services/websocket_server.dart';
 
-class MyHomePage extends StatefulWidget {
-  final String title;
-  final String gamePath;
+class GamePage extends StatefulWidget {
+  final Game game;
 
-  const MyHomePage({super.key, required this.title, required this.gamePath});
+  const GamePage({super.key, required this.game});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<GamePage> createState() => _GamePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _GamePageState extends State<GamePage> {
   late WebSocketServer _server;
   String _localIp = "";
 
   @override
   void initState() {
     super.initState();
-    _server = WebSocketServer(widget.gamePath, _showSnackBar);
+    _server = WebSocketServer(widget.game.path, _showSnackBar);
     _server.start().then((_) {
       setState(() {});
     });
@@ -68,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     List<Widget> controls;
 
-    if (widget.gamePath == "/pong") {
+    if (widget.game.path == "/pong") {
       controls = [
         _buildControlButton("Góra", Colors.green, "move", 1),
         const SizedBox(height: 10),
         _buildControlButton("Dół", Colors.red, "move", -1),
       ];
-    } else if (widget.gamePath == "/flappy") {
+    } else if (widget.game.path == "/flappy") {
       controls = [
         _buildControlButton("Jump", Colors.green, "jump", 1),
       ];
@@ -83,12 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(title: Text(widget.game.name)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Adres: http://$_localIp:8080${widget.gamePath}'),
+            Text('Adres: http://$_localIp:8080${widget.game.path}'),
             Text('Połączonych urządzeń: ${_server.connectedAmount}'),
             const SizedBox(height: 20),
             ...controls,
