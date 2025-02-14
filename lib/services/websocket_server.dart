@@ -22,18 +22,18 @@ class WebSocketServer {
           WebSocket socket = await WebSocketTransformer.upgrade(request);
           _clients.add(socket);
           onClientsUpdated?.call();
-          showSnackBarCallback('Nowe połączenie: ${socket.hashCode}');
+          showSnackBarCallback('New connnection: ${socket.hashCode}');
 
           socket.listen((data) {}, onDone: () {
             _clients.remove(socket);
             onClientsUpdated?.call();
           }, onError: (error) {
-            showSnackBarCallback('Błąd WebSocket: $error');
+            showSnackBarCallback('WebSocket error: $error');
           });
         }
       });
     } catch (e) {
-      showSnackBarCallback('Błąd uruchamiania serwera: $e');
+      showSnackBarCallback('Cannot run server: $e');
     }
   }
 

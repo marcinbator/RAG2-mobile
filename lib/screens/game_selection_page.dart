@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/Game.dart';
+import '../models/game.dart';
 import 'game_page.dart';
 
 class GameSelectionPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class GameSelectionPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Wybierz grę")),
+      appBar: AppBar(title: const Text("Select game")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +28,6 @@ class GameSelectionPage extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildGameButton(BuildContext context, Game game) {
     return ElevatedButton(

@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:rag_2_mobile/models/Game.dart';
+import 'package:rag_2_mobile/models/game.dart';
+import 'package:rag_2_mobile/screens/components/game_steering.dart';
 
 import '../services/websocket_server.dart';
 
@@ -48,39 +49,10 @@ class _GamePageState extends State<GamePage> {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Widget _buildControlButton(
-      String text, Color color, String actionName, int action) {
-    return GestureDetector(
-      onTapDown: (_) => _server.sendAction(actionName, action),
-      onTapUp: (_) => _server.sendAction(actionName, 0),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(text, style: const TextStyle(color: Colors.white)),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    List<Widget> controls;
-
-    if (widget.game.path == "/pong") {
-      controls = [
-        _buildControlButton("Góra", Colors.green, "move", 1),
-        const SizedBox(height: 10),
-        _buildControlButton("Dół", Colors.red, "move", -1),
-      ];
-    } else if (widget.game.path == "/flappy") {
-      controls = [
-        _buildControlButton("Jump", Colors.green, "jump", 1),
-      ];
-    } else {
-      controls = [const Text("Brak sterowania dla tej gry")];
-    }
+    var steeringPage = GameSteering(_server.sendAction);
+    List<Widget> controls = steeringPage.generateControls(widget.game);
 
     return Scaffold(
       appBar: AppBar(title: Text(widget.game.name)),
@@ -88,8 +60,8 @@ class _GamePageState extends State<GamePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Adres: http://$_localIp:8080${widget.game.path}'),
-            Text('Połączonych urządzeń: ${_server.connectedAmount}'),
+            Text('Adress: http://$_localIp:8080${widget.game.path}'),
+            Text('Connected devices: ${_server.connectedAmount}'),
             const SizedBox(height: 20),
             ...controls,
           ],
@@ -109,7 +81,7 @@ class _GamePageState extends State<GamePage> {
         }
       }
     } catch (e) {
-      return "Nie udało się pobrać IP";
+      return "Cannot get IP";
     }
     return "";
   }
