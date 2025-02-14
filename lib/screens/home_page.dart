@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import '../services/websocket_server.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
   final String title;
+  final String gamePath;
+
+  const MyHomePage({super.key, required this.title, required this.gamePath});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -20,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    _server = WebSocketServer(_showSnackBar);
+    _server = WebSocketServer(widget.gamePath, _showSnackBar);
     _server.start().then((_) {
       setState(() {});
     });
@@ -47,33 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Adres: http://$_localIp:${_server.port}'),
-            Text('Połączonych urządzeń: ${_server.connectedAmount}'),
-            const SizedBox(height: 20),
-            _buildControlButton("🔼 Góra", Colors.green, 1),
-            const SizedBox(height: 10),
-            _buildControlButton("🔽 Dół", Colors.red, -1),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildControlButton(String text, Color color, int moveValue) {
+  Widget _buildControlButton(
+      String text, Color color, String actionName, int action) {
     return GestureDetector(
-      onTapDown: (_) => _server.updateMove(moveValue),
-      onTapUp: (_) => _server.updateMove(0),
+      onTapDown: (_) => _server.sendAction(actionName, action),
+      onTapUp: (_) => _server.sendAction(actionName, 0),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
@@ -81,6 +60,40 @@ class _MyHomePageState extends State<MyHomePage> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(text, style: const TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> controls;
+
+    if (widget.gamePath == "/pong") {
+      controls = [
+        _buildControlButton("Góra", Colors.green, "move", 1),
+        const SizedBox(height: 10),
+        _buildControlButton("Dół", Colors.red, "move", -1),
+      ];
+    } else if (widget.gamePath == "/flappy") {
+      controls = [
+        _buildControlButton("Jump", Colors.green, "jump", 1),
+      ];
+    } else {
+      controls = [const Text("Brak sterowania dla tej gry")];
+    }
+
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.title)),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Adres: http://$_localIp:8080${widget.gamePath}'),
+            Text('Połączonych urządzeń: ${_server.connectedAmount}'),
+            const SizedBox(height: 20),
+            ...controls,
+          ],
+        ),
       ),
     );
   }

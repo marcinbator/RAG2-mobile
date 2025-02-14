@@ -4,31 +4,29 @@ import 'dart:io';
 import 'dart:ui';
 
 class WebSocketServer {
+  final String path;
   HttpServer? _server;
   final List<WebSocket> _clients = [];
-  int _currentMove = 0;
   final void Function(String) showSnackBarCallback;
   int port = 8080;
   VoidCallback? onClientsUpdated;
 
-  WebSocketServer(this.showSnackBarCallback);
+  WebSocketServer(this.path, this.showSnackBarCallback);
 
   Future<void> start() async {
     try {
       _server = await HttpServer.bind(InternetAddress.anyIPv4, port);
-
       _server!.listen((HttpRequest request) async {
-        if (WebSocketTransformer.isUpgradeRequest(request)) {
+        if (request.uri.path == path &&
+            WebSocketTransformer.isUpgradeRequest(request)) {
           WebSocket socket = await WebSocketTransformer.upgrade(request);
           _clients.add(socket);
           onClientsUpdated?.call();
-          showSnackBarCallback('Nowe połączenie: ${_clients[0].hashCode}');
+          showSnackBarCallback('Nowe połączenie: ${socket.hashCode}');
 
-          socket.listen((data) {
-            _sendMove(socket);
-          }, onDone: () {
-            onClientsUpdated?.call();
+          socket.listen((data) {}, onDone: () {
             _clients.remove(socket);
+            onClientsUpdated?.call();
           }, onError: (error) {
             showSnackBarCallback('Błąd WebSocket: $error');
           });
@@ -39,15 +37,10 @@ class WebSocketServer {
     }
   }
 
-  void _sendMove(WebSocket client) {
-    String jsonData = jsonEncode({"move": _currentMove});
-    client.add(jsonData);
-  }
-
-  void updateMove(int move) {
-    _currentMove = move;
+  void sendAction(String actionName, int action) {
+    String jsonData = jsonEncode({actionName: action});
     for (var client in _clients) {
-      _sendMove(client);
+      client.add(jsonData);
     }
   }
 

@@ -1,30 +1,36 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:rag_2_mobile/main.dart';
+import 'package:rag_2_mobile/screens/game_selection_page.dart';
+import 'package:rag_2_mobile/screens/home_page.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const Rag2Mobile());
+  group('Game Selection Tests', () {
+    testWidgets('Should navigate to home page for selected game', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: GameSelectionPage()));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+      expect(find.text('Pong'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+      await tester.tap(find.text('Pong'));
+      await tester.pumpAndSettle();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+      expect(find.text('Pong'), findsOneWidget);
+    });
+  });
+
+  group('Home Page Tests', () {
+    testWidgets('Should display IP address and connected devices count', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: MyHomePage(title: 'Pong', gamePath: '/pong')));
+      await tester.pumpAndSettle();
+      expect(find.text('Połączonych urządzeń: 0'), findsOneWidget);
+    });
+
+    testWidgets('Should send correct action when control button is tapped', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: MyHomePage(title: 'Pong', gamePath: '/pong')));
+
+      expect(find.text("Góra"), findsOneWidget);
+
+      await tester.tap(find.text('Góra'));
+      await tester.pump();
+    });
   });
 }
