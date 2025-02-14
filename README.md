@@ -1,16 +1,17 @@
-# rag_2_mobile
+# RAG2 mobile
 
-A new Flutter project.
+Flutter app providing remote steering for RAG2 Games (https://rutai.kia.prz.edu.pl)
 
-## Getting Started
+# Prerequisities
 
-This project is a starting point for a Flutter application.
+- Android phone with RAG2 mobile app
+- Wi-fi connection to the same LAN as computer with browser with RAG2 opened
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Instruction
+1. Open http://rutai.kia.prz.edu.pl (not https)
+2. Select desired game both in browser and in mobile app
+3. In browser, select SOCKET steering method for desired player
+4. In browser, in socket menu for player type in the websocket URL displayed in app, then press `Connect`
+5. When connection is successfull, app will display a snackbar with unique remote device ID
+6. In browser, in socket menu scroll down and press `Start data exchange`
+7. Enjoy!
