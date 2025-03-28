@@ -59,7 +59,7 @@ class _GamePageState extends State<GamePage> {
   @override
   Widget build(BuildContext context) {
     var steeringPage = GameSteering(_server.sendAction);
-    List<Widget> controls = steeringPage.generateControls(widget.game);
+    List<Widget> controls = steeringPage.generateControls(widget.game, context);
 
     if (_server.connectedAmount == 0) {
       return Scaffold(
