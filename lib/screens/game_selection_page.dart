@@ -40,7 +40,6 @@ class GameSelectionPage extends StatelessWidget {
                 "Select game",
                 style: TextStyle(
                   fontSize: 20,
-                  fontFamily: ''
                 ),
               ),
             ),
