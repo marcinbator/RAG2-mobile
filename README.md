@@ -1,18 +1,3 @@
-# rag_2_mobile
+# RAG2 mobile
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-To generate icons use `flutter pub run flutter_launcher_icons`
+Mobile steering tool for RAG2 games. Allows to steer games provided in service [https://rutai.kia.prz.edu.pl](https://rutai.kia.prz.edu.pl) with buttons or device sensors like gyroscope.
