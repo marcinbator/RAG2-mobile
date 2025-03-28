@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:rag_2_mobile/properties/colors.dart';
+import 'package:rag_2_mobile/data/colors.dart';
 
-import '../models/game.dart';
+import '../data/games.dart';
 import 'game_page.dart';
 
 class GameSelectionPage extends StatelessWidget {
@@ -9,11 +9,6 @@ class GameSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Game> games = [
-      const Game('Pong', '/pong'),
-      const Game('Flappybird', '/flappy'),
-    ];
-
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),

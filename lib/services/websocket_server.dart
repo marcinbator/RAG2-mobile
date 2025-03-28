@@ -37,7 +37,7 @@ class WebSocketServer {
     }
   }
 
-  void sendAction(String actionName, int action) {
+  void sendAction(String actionName, double action) {
     String jsonData = jsonEncode({actionName: action});
     for (var client in _clients) {
       client.add(jsonData);

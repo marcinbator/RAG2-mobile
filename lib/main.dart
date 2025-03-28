@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rag_2_mobile/properties/colors.dart';
+import 'package:rag_2_mobile/data/colors.dart';
 
 import 'screens/game_selection_page.dart';
 

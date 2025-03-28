@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:rag_2_mobile/data/colors.dart';
 import 'package:rag_2_mobile/models/game.dart';
-import 'package:rag_2_mobile/properties/colors.dart';
 import 'package:rag_2_mobile/screens/components/game_steering.dart';
 
 import '../services/websocket_server.dart';
