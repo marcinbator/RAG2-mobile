@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rag_2_mobile/properties/colors.dart';
 
 import '../models/game.dart';
 import 'game_page.dart';
@@ -17,6 +18,7 @@ class GameSelectionPage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
+          backgroundColor: lightGray,
           title: Row(
             children: [
               Image.asset(
@@ -24,7 +26,10 @@ class GameSelectionPage extends StatelessWidget {
                 height: 40,
               ),
               const SizedBox(width: 10),
-              const Text("RAG2 Mobile"),
+              const Text(
+                "RAG2 Mobile",
+                style: TextStyle(color: mainCreme),
+              ),
             ],
           ),
         ),
@@ -38,26 +43,28 @@ class GameSelectionPage extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 10.0),
               child: Text(
                 "Select game",
-                style: TextStyle(
-                  fontSize: 20,
-                ),
+                style: TextStyle(fontSize: 20, color: mainCreme),
               ),
             ),
             Expanded(
               child: ListView(
                 children: games.map((game) {
                   return Card(
-                    elevation: 4,
+                    elevation: 1,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       title: Text(
                         game.name,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      trailing: const Icon(Icons.arrow_forward_ios),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios,
+                        color: mainOrange,
+                      ),
                       onTap: () {
                         Navigator.push(
                           context,

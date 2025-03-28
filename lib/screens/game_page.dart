@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:rag_2_mobile/models/game.dart';
+import 'package:rag_2_mobile/properties/colors.dart';
 import 'package:rag_2_mobile/screens/components/game_steering.dart';
 
 import '../services/websocket_server.dart';
@@ -49,22 +50,81 @@ class _GamePageState extends State<GamePage> {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
+  void _disconnect() {
+    _server.stop();
+    _server.start();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     var steeringPage = GameSteering(_server.sendAction);
     List<Widget> controls = steeringPage.generateControls(widget.game);
 
+    if (_server.connectedAmount == 0) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.game.name,
+            style: TextStyle(color: mainCreme),
+          ),
+          backgroundColor: lightGray,
+          iconTheme: IconThemeData(
+            color: mainOrange, //change your color here
+          ),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Steering tool address:'),
+              Text('http://$_localIp:8080${widget.game.path}'),
+              Text('No connected devices',
+                  style: TextStyle(fontWeight: FontWeight.bold))
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text(widget.game.name)),
+      appBar: AppBar(
+        title: Text(
+          widget.game.name,
+          style: TextStyle(color: mainCreme),
+        ),
+        backgroundColor: lightGray,
+        iconTheme: IconThemeData(
+          color: mainOrange, //change your color here
+        ),
+      ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Adress: http://$_localIp:8080${widget.game.path}'),
-            Text('Connected devices: ${_server.connectedAmount}'),
-            const SizedBox(height: 20),
-            ...controls,
-          ],
+        child: Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Connected devices: ${_server.connectedAmount}'),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: _disconnect,
+                    child: Text(
+                      'Disconnect',
+                      style: TextStyle(color: mainGray),
+                    ),
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [...controls],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
