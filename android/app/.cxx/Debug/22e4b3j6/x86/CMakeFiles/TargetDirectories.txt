@@ -1,2 +1,0 @@
-/mnt/Common/Repozytorium/Code/Mobile/rag_2_mobile/android/app/.cxx/Debug/22e4b3j6/x86/CMakeFiles/edit_cache.dir
-/mnt/Common/Repozytorium/Code/Mobile/rag_2_mobile/android/app/.cxx/Debug/22e4b3j6/x86/CMakeFiles/rebuild_cache.dir
